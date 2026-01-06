@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Progressive Web App untuk Layanan Administrasi Desa">
+    <meta name="theme-color" content="#2196F3">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Admin Desa">
+    
+    <title>Layanan Administrasi Desa</title>
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/style/css.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Layanan Administrasi Desa</h1>
+            <p class="subtitle">Sistem Progressive Web App untuk Pelayanan Masyarakat</p>
+        </header>
+        
+        <main>
+            <div class="welcome-section">
+                <h2>Selamat Datang</h2>
+                <p>Aplikasi ini memudahkan akses layanan administrasi desa kapan saja dan di mana saja, bahkan dalam mode offline.</p>
+            </div>
+            
+            <div class="menu-cards">
+                <div class="card">
+                    <div class="card-icon">🏠</div>
+                    <h3>Portal Warga</h3>
+                    <p>Akses layanan administrasi untuk warga desa</p>
+                    <a href="/home/index.php" class="btn btn-primary">Masuk</a>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Portal Admin</h3>
+                    <p>Panel administrasi untuk perangkat desa</p>
+                    <a href="/admin/index.php" class="btn btn-secondary">Login Admin</a>
+                </div>
+            </div>
+            
+            <div class="features-section">
+                <h2>Fitur Progressive Web App</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <span class="feature-icon">📱</span>
+                        <h4>Installable</h4>
+                        <p>Dapat diinstall di perangkat mobile dan desktop</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔌</span>
+                        <h4>Offline Mode</h4>
+                        <p>Tetap dapat diakses tanpa koneksi internet</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">⚡</span>
+                        <h4>Fast Loading</h4>
+                        <p>Loading cepat dengan caching teknologi</p>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🔄</span>
+                        <h4>Auto Update</h4>
+                        <p>Selalu mendapat pembaruan terbaru</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="install-prompt" id="installPrompt" style="display: none;">
+                <div class="prompt-content">
+                    <p>📲 Install aplikasi ini di perangkat Anda untuk akses lebih mudah!</p>
+                    <button id="installButton" class="btn btn-install">Install Sekarang</button>
+                    <button id="dismissButton" class="btn btn-dismiss">Nanti Saja</button>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Layanan Administrasi Desa - Progressive Web App</p>
+            <p class="pwa-status">
+                <span id="onlineStatus">🟢 Online</span>
+            </p>
+        </footer>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/style/js.js"></script>
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // Install prompt handler
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+        
+        document.getElementById('installButton')?.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+        });
+        
+        document.getElementById('dismissButton')?.addEventListener('click', () => {
+            document.getElementById('installPrompt').style.display = 'none';
+        });
+        
+        // Online/Offline status
+        function updateOnlineStatus() {
+            const statusElement = document.getElementById('onlineStatus');
+            if (navigator.onLine) {
+                statusElement.textContent = '🟢 Online';
+                statusElement.style.color = '#4CAF50';
+            } else {
+                statusElement.textContent = '🔴 Offline';
+                statusElement.style.color = '#f44336';
+            }
+        }
+        
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus();
+    </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <title>Portal Warga - Administrasi Desa</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/style/css.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Portal Warga</h1>
+            <p class="subtitle">Layanan Administrasi Desa untuk Masyarakat</p>
+        </header>
+        
+        <main>
+            <div id="connectionStatus" style="display: none; padding: 15px; text-align: center; font-weight: bold;"></div>
+            
+            <div class="welcome-section">
+                <h2>Layanan Kami</h2>
+                <p>Pilih layanan administrasi yang Anda butuhkan</p>
+            </div>
+            
+            <div class="service-list">
+                <div class="service-item">
+                    <h4>📄 Surat Keterangan Domisili</h4>
+                    <p>Pengajuan surat keterangan domisili</p>
+                    <button onclick="selectService('domisili')" class="btn btn-primary">Ajukan</button>
+                </div>
+                
+                <div class="service-item">
+                    <h4>👨‍👩‍👧‍👦 Surat Keterangan Keluarga</h4>
+                    <p>Pengajuan kartu keluarga dan surat keterangan</p>
+                    <button onclick="selectService('keluarga')" class="btn btn-primary">Ajukan</button>
+                </div>
+                
+                <div class="service-item">
+                    <h4>🆔 Surat Pengantar KTP</h4>
+                    <p>Pengajuan surat pengantar pembuatan KTP</p>
+                    <button onclick="selectService('ktp')" class="btn btn-primary">Ajukan</button>
+                </div>
+                
+                <div class="service-item">
+                    <h4>💼 Surat Keterangan Usaha</h4>
+                    <p>Pengajuan surat keterangan usaha</p>
+                    <button onclick="selectService('usaha')" class="btn btn-primary">Ajukan</button>
+                </div>
+                
+                <div class="service-item">
+                    <h4>🏠 Surat Keterangan Tidak Mampu</h4>
+                    <p>Pengajuan SKTM untuk bantuan</p>
+                    <button onclick="selectService('sktm')" class="btn btn-primary">Ajukan</button>
+                </div>
+                
+                <div class="service-item">
+                    <h4>📋 Surat Keterangan Lainnya</h4>
+                    <p>Pengajuan surat keterangan lainnya</p>
+                    <button onclick="selectService('lainnya')" class="btn btn-primary">Ajukan</button>
+                </div>
+            </div>
+            
+            <div id="formSection" style="display: none; margin-top: 40px;">
+                <h2 id="formTitle">Form Pengajuan</h2>
+                <form id="serviceForm" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap *</label>
+                        <input type="text" id="nama" name="nama" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nik">NIK (Nomor Induk Kependudukan) *</label>
+                        <input type="text" id="nik" name="nik" pattern="[0-9]{16}" maxlength="16" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="alamat">Alamat Lengkap *</label>
+                        <textarea id="alamat" name="alamat" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telepon">Nomor Telepon *</label>
+                        <input type="tel" id="telepon" name="telepon" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keperluan">Keperluan *</label>
+                        <textarea id="keperluan" name="keperluan" rows="3" required></textarea>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+                        <button type="button" onclick="cancelForm()" class="btn btn-dismiss">Batal</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="submissionList" style="margin-top: 40px;">
+                <h2>Riwayat Pengajuan</h2>
+                <div id="historyList"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/" class="btn btn-secondary">Kembali ke Beranda</a>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Layanan Administrasi Desa</p>
+        </footer>
+    </div>
+    
+    <script src="/style/js.js"></script>
+    <script>
+        let currentService = '';
+        
+        function selectService(serviceType) {
+            currentService = serviceType;
+            const titles = {
+                'domisili': 'Surat Keterangan Domisili',
+                'keluarga': 'Surat Keterangan Keluarga',
+                'ktp': 'Surat Pengantar KTP',
+                'usaha': 'Surat Keterangan Usaha',
+                'sktm': 'Surat Keterangan Tidak Mampu',
+                'lainnya': 'Surat Keterangan Lainnya'
+            };
+            
+            document.getElementById('formTitle').textContent = 'Form Pengajuan ' + titles[serviceType];
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function cancelForm() {
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('serviceForm').reset();
+        }
+        
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const formData = {
+                service: currentService,
+                nama: document.getElementById('nama').value,
+                nik: document.getElementById('nik').value,
+                alamat: document.getElementById('alamat').value,
+                telepon: document.getElementById('telepon').value,
+                keperluan: document.getElementById('keperluan').value,
+                tanggal: new Date().toISOString(),
+                status: 'Menunggu Proses'
+            };
+            
+            // Save to localStorage
+            let submissions = AppStorage.load('submissions') || [];
+            submissions.push(formData);
+            AppStorage.save('submissions', submissions);
+            
+            alert('✅ Pengajuan berhasil disimpan!\n\nData Anda akan diproses oleh perangkat desa.');
+            
+            document.getElementById('serviceForm').reset();
+            document.getElementById('formSection').style.display = 'none';
+            loadHistory();
+        }
+        
+        function loadHistory() {
+            const submissions = AppStorage.load('submissions') || [];
+            const historyList = document.getElementById('historyList');
+            
+            if (submissions.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: #999;">Belum ada pengajuan</p>';
+                return;
+            }
+            
+            historyList.innerHTML = submissions.map((item, index) => `
+                <div class="service-item" style="margin-bottom: 15px;">
+                    <h4>${item.service.toUpperCase()} - ${item.nama}</h4>
+                    <p><strong>NIK:</strong> ${item.nik}</p>
+                    <p><strong>Tanggal:</strong> ${formatDate(item.tanggal)}</p>
+                    <p><strong>Status:</strong> <span style="color: #FF9800; font-weight: bold;">${item.status}</span></p>
+                </div>
+            `).reverse().join('');
+        }
+        
+        // Load history on page load
+        document.addEventListener('DOMContentLoaded', loadHistory);
+    </script>
+</body>
+</html>

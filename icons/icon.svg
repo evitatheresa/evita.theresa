@@ -1,0 +1,7 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#2196F3"/>
+  <circle cx="256" cy="256" r="200" fill="#1976D2"/>
+  <path d="M 156 306 L 156 406 L 206 406 L 206 306 Z M 256 256 L 256 406 L 306 406 L 306 256 Z M 356 306 L 356 406 L 406 406 L 406 306 Z" fill="white"/>
+  <path d="M 106 256 L 256 156 L 406 256 L 406 236 L 256 136 L 106 236 Z" fill="white"/>
+  <text x="256" y="470" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">ADMIN DESA</text>
+</svg>
