@@ -2,8 +2,8 @@ const CACHE_NAME = 'admin-desa-v1';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/home/index.php',
-  '/admin/index.php',
+  '/home/index.html',
+  '/admin/index.html',
   '/style/css.css',
   '/style/js.js',
   '/manifest.json'
