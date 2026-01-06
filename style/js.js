@@ -69,26 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Form validation helper
-function validateForm(formId) {
-    const form = document.getElementById(formId);
-    if (!form) return false;
-    
-    const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
-    let isValid = true;
-    
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            isValid = false;
-            input.style.borderColor = '#f44336';
-        } else {
-            input.style.borderColor = '#e0e0e0';
-        }
-    });
-    
-    return isValid;
-}
-
 // Local storage helper functions
 const AppStorage = {
     save: (key, data) => {
@@ -152,18 +132,4 @@ function formatDate(date) {
         timeZone: 'Asia/Jakarta'
     };
     return new Date(date).toLocaleDateString('id-ID', options);
-}
-
-// Export functions for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        isPWA,
-        showNotification,
-        requestNotificationPermission,
-        validateForm,
-        AppStorage,
-        showLoading,
-        hideLoading,
-        formatDate
-    };
 }

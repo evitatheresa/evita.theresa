@@ -36,9 +36,9 @@ evita.theresa/
 ├── manifest.json           # Web App Manifest
 ├── sw.js                   # Service Worker untuk offline mode
 ├── admin/
-│   └── index.php          # Portal administrator
+│   └── index.html         # Portal administrator
 ├── home/
-│   └── index.php          # Portal warga
+│   └── index.html         # Portal warga
 ├── style/
 │   ├── css.css            # Stylesheet utama
 │   └── js.js              # JavaScript utilities
